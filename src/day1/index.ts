@@ -10,7 +10,7 @@ const getInput = (filePath: string) =>
 
 const input = getInput(path.resolve(__dirname, 'input.txt'))
 
-/** --- */
+/* --- Part One --- */
 
 const countMeasurementsIncreases = () => {
   let count = 0
@@ -31,7 +31,7 @@ const result1 = countMeasurementsIncreases()
 
 console.log({result1})
 
-/** --- */
+/* --- Part Two --- */
 
 const countGroupMeasurementsIncreases = () => {
   let count = 0
