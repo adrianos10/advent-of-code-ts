@@ -1,84 +1,84 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
 const getInput = (filePath: string) =>
   fs
     .readFileSync(filePath, 'utf-8')
     .split('\n')
     .filter(Boolean)
-    .map(v => parseInt(v))
+    .map((v) => parseInt(v));
 
-const input = getInput(path.resolve(__dirname, 'input.txt'))
+const input = getInput(path.resolve(__dirname, 'input.txt'));
 
 /* --- Part One --- */
 
 const countMeasurementsIncreases = () => {
-  let count = 0
-  let previousValue = undefined
+  let count = 0;
+  let previousValue = undefined;
 
   for (const value of input) {
     if (previousValue !== undefined && value > previousValue) {
-      count += 1
+      count += 1;
     }
 
-    previousValue = value
+    previousValue = value;
   }
 
-  return count
-}
+  return count;
+};
 
-const result1 = countMeasurementsIncreases()
+const result1 = countMeasurementsIncreases();
 
-console.log({result1})
+console.log({ result1 });
 
 /* --- Part Two --- */
 
 const countGroupMeasurementsIncreases = () => {
-  let count = 0
-  let valueGroup: number[] = []
-  let currentGroupSum = 0
-  let previousGroupSum = 0
+  let count = 0;
+  let valueGroup: number[] = [];
+  let currentGroupSum = 0;
+  let previousGroupSum = 0;
 
   const sumGroup = () =>
-    valueGroup.reduce((sum, currentValue) => sum + currentValue, 0)
+    valueGroup.reduce((sum, currentValue) => sum + currentValue, 0);
 
   for (const index in input) {
     // make first group
     if (valueGroup.length < 3) {
-      valueGroup.push(input[index])
+      valueGroup.push(input[index]);
     }
 
     // make every next group
     if (parseInt(index) > 2) {
-      valueGroup.shift()
-      valueGroup.push(input[index])
+      valueGroup.shift();
+      valueGroup.push(input[index]);
     }
 
     // sum group and count increases
     if (valueGroup.length === 3) {
       // set initial group sum
       if (parseInt(index) === 2) {
-        const initialGroupSum = sumGroup()
+        const initialGroupSum = sumGroup();
 
-        currentGroupSum = initialGroupSum
-        previousGroupSum = initialGroupSum
+        currentGroupSum = initialGroupSum;
+        previousGroupSum = initialGroupSum;
 
-        continue
+        continue;
       }
 
-      currentGroupSum = sumGroup()
+      currentGroupSum = sumGroup();
 
       if (currentGroupSum > previousGroupSum) {
-        count += 1
+        count += 1;
       }
 
-      previousGroupSum = currentGroupSum
+      previousGroupSum = currentGroupSum;
     }
   }
 
-  return count
-}
+  return count;
+};
 
-const result2 = countGroupMeasurementsIncreases()
+const result2 = countGroupMeasurementsIncreases();
 
-console.log({result2})
+console.log({ result2 });
