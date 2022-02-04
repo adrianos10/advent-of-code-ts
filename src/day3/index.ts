@@ -13,9 +13,9 @@ const input = getInput();
     () => ({ zeroCount: 0, oneCount: 0 }),
   );
 
-  input.forEach((binary, index) => {
+  input.forEach((binary, binaryIndex) => {
     if (binary.length !== expectedBinaryLength) {
-      throw new Error(`Broken binary length on index ${index}`);
+      throw new Error(`Broken binary length on index ${binaryIndex}`);
     }
 
     binary.split('').forEach((value, index) => {
@@ -23,7 +23,7 @@ const input = getInput();
         if (value === '1') gammaRateBinaryStructure[index].oneCount += 1;
         if (value === '0') gammaRateBinaryStructure[index].zeroCount += 1;
       } else {
-        throw new Error(`Broken binary value on index ${index}`);
+        throw new Error(`Broken binary value on index ${binaryIndex}`);
       }
     });
   });
