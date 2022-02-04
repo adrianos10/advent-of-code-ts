@@ -15,7 +15,7 @@ const isValidDirection = (direction: string): direction is Direction =>
 
 const getInput = (): Input[] =>
   fs
-    .readFileSync(path.resolve(__dirname, './input.txt'), 'utf-8')
+    .readFileSync(path.resolve(__dirname, 'input.txt'), 'utf-8')
     .split('\n')
     .filter(Boolean)
     .map((v) => {
