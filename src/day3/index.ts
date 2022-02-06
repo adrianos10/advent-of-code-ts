@@ -10,10 +10,9 @@ const input = getInput();
 
 (function () {
   const expectedBinaryLength = input[0].length;
-  const gammaRateBinaryStructure = Array.from(
-    { length: expectedBinaryLength },
-    () => ({ zeroCount: 0, oneCount: 0 }),
-  );
+  const gammaRateBinaryStructure = Array(expectedBinaryLength)
+    .fill(undefined)
+    .map(() => ({ zeroCount: 0, oneCount: 0 }));
 
   input.forEach((binary, binaryIndex) => {
     if (binary.length !== expectedBinaryLength) {
@@ -80,10 +79,9 @@ const findCommonValue = (
 
 (function () {
   const expectedBinaryLength = input[0].length;
-  const iterateMock = Array.from(
-    Array(expectedBinaryLength),
-    (_, index) => index,
-  );
+  const iterateMock = Array(expectedBinaryLength)
+    .fill(undefined)
+    .map((_, index) => index);
 
   let scrubberRatingResult = input;
   let oxygenGeneratorRatingResult = input;
