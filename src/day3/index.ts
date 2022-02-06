@@ -6,6 +6,8 @@ const getInput = () =>
 
 const input = getInput();
 
+/* --- Part One --- */
+
 (function () {
   const expectedBinaryLength = input[0].length;
   const gammaRateBinaryStructure = Array.from(
@@ -39,5 +41,91 @@ const input = getInput();
   console.log({
     result1:
       parseInt(gammaRateBinaryValue, 2) * parseInt(epsilonRateBinaryValue, 2),
+  });
+})();
+
+/* --- Part One --- */
+
+const findCommonValue = (
+  input: string[],
+  searchIndex: number,
+  fallbackValue: string,
+  mode: 'most' | 'least' = 'most',
+) =>
+  Object.entries(
+    input.reduce<Record<string, number>>((result, currentValue) => {
+      const indexedValue = currentValue.split('')[searchIndex];
+
+      if (!indexedValue) {
+        throw new Error('Given index does not exist');
+      }
+
+      if (!(indexedValue in result)) {
+        result[indexedValue] = 0;
+      }
+
+      result[indexedValue] += 1;
+
+      return result;
+    }, {}),
+  ).sort(([a, countA], [_, countB]) => {
+    const result = mode === 'most' ? countB - countA : countA - countB;
+
+    if (result === 0) {
+      return a === fallbackValue ? -1 : 1;
+    }
+
+    return result;
+  })[0][0];
+
+(function () {
+  const expectedBinaryLength = input[0].length;
+  const iterateMock = Array.from(
+    Array(expectedBinaryLength),
+    (_, index) => index,
+  );
+
+  let scrubberRatingResult = input;
+  let oxygenGeneratorRatingResult = input;
+
+  while (
+    scrubberRatingResult.length > 1 ||
+    oxygenGeneratorRatingResult.length > 1
+  ) {
+    for (const index of iterateMock) {
+      if (oxygenGeneratorRatingResult.length > 1) {
+        const mostCommonValue = findCommonValue(
+          oxygenGeneratorRatingResult,
+          index,
+          '1',
+        );
+
+        oxygenGeneratorRatingResult = oxygenGeneratorRatingResult.filter(
+          (value) => value.charAt(index) === mostCommonValue,
+        );
+      }
+
+      // FIXME: probably we can get those values during oxygenGeneratorRatingResult iteration
+      // so I would't need to pass the union as mode to findCommonValue method,
+      // but I didn't have time to check :)
+      if (scrubberRatingResult.length > 1) {
+        const leastCommonValue = findCommonValue(
+          scrubberRatingResult,
+          index,
+          '0',
+          'least',
+        );
+
+        scrubberRatingResult = scrubberRatingResult.filter(
+          (value) => value.charAt(index) === leastCommonValue,
+        );
+      }
+    }
+  }
+
+  console.log({
+    result2:
+      parseInt(oxygenGeneratorRatingResult[0], 2) *
+      parseInt(scrubberRatingResult[0], 2),
   });
 })();
